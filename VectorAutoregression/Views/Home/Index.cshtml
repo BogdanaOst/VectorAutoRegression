@@ -57,8 +57,7 @@ chart2.render();
     </script>
 </head>
 <body>
-    <h3>We can build VAR model for stationarity or for not cointegrated input</h3>
-    <h4>Checking stationarity</h4>
+    <h4>Original series</h4>
     <h3>Var model can be built</h3>
     <p> $$\begin{pmatrix}X{_t} \\\ Y{_t}\end{pmatrix} = \begin{pmatrix}@Model.CoefMatrix[0, 0] \\\ @Model.CoefMatrix[1, 0]\end{pmatrix} + \begin{pmatrix}@Model.CoefMatrix[0, 1]& @Model.CoefMatrix[0, 2]\\\ @Model.CoefMatrix[1, 1] & @Model.CoefMatrix[1, 2]\end{pmatrix} *\begin{pmatrix}X{_t} \\\ Y{_t}\end{pmatrix} + \begin{pmatrix}@Model.Eps[0] \\\ @Model.Eps[1]\end{pmatrix}$$</p>
     <div id="chartContainer" style="height: 370px; width: 100%;"></div>

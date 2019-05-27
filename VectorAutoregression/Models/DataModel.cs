@@ -19,7 +19,7 @@ namespace VectorAutoregression.Models
 
         public DataModel(List<double> X1, List<double> X2)
         {
-            var result = VarComputeService.Predicted(X1, X2, out CoefMatrix, out Eps);
+            var result = ComputeService.Predicted(X1, X2, out CoefMatrix, out Eps);
             InputX1 = X1.ToDataPoint();
             InputX2 = X2.ToDataPoint();
             OutputX1 = result[0].ToDataPoint();

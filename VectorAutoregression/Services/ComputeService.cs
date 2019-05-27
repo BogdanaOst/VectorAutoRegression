@@ -7,7 +7,7 @@ using VectorAutoregression.Models;
 
 namespace VectorAutoregression.Services
 {
-    public static class VarComputeService
+    public static class ComputeService
     {
         #region Extentions
         public static List<DataPoint> ToDataPoint(this List<double> set)
@@ -19,11 +19,13 @@ namespace VectorAutoregression.Services
             }
             return result;
         }
-       
+
         #endregion
 
+        #region Methods
+        //akf
 
-        public static List<double>[] Predicted(List<double> X1, List<double> X2, out double[,] B, /*out double[] eps*/)
+        public static List<double>[] PredictedVar(List<double> X1, List<double> X2, out double[,] B, out double[] eps)
         {
             var M = Matrix<double>.Build;
             var V = Vector<double>.Build;
@@ -48,7 +50,7 @@ namespace VectorAutoregression.Services
             }
 
             B = (B1.Append(B2)).Transpose().ToArray();
-            //eps = new double[2] { };
+            eps = new double[2] {0,0};
             return new List<double>[2]
             {
                 X1Pr.ToList(),
@@ -64,5 +66,7 @@ namespace VectorAutoregression.Services
                 res[i] = 1;
             return res;
         });
+
+        #endregion
     }
 }
