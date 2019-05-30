@@ -8,7 +8,7 @@ namespace VectorAutoregression.Services
 {
     public static class InputConverter
     {
-        public static PreProcessDataModel ConvertToDM(HttpPostedFileBase file)
+        public static VarDataModel ConvertToDM(HttpPostedFileBase file)
         {
             var x1 = new List<double>();
             var x2 = new List<double>();
@@ -22,7 +22,7 @@ namespace VectorAutoregression.Services
                 }
             }
 
-            return new PreProcessDataModel(x1, x2);
+            return new VarDataModel(x1, x2);
         }
     }
 }

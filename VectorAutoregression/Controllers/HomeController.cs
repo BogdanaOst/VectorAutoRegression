@@ -11,7 +11,7 @@ namespace VectorAutoregression.Controllers
 {
     public class HomeController : Controller
     {
-        static PreProcessDataModel MainModel;
+        static VarDataModel MainModel;
 
         [HttpGet]
         public ActionResult Index()
@@ -24,24 +24,17 @@ namespace VectorAutoregression.Controllers
         {
             if(file==null)
             {
-                MainModel = new PreProcessDataModel(InputModels.BMI.ToList(), InputModels.Chol.ToList());
+                MainModel = new VarDataModel(InputModels.BMI.ToList(), InputModels.Chol.ToList());
             } else
             {
-                //if(System.IO.Path.GetExtension(file.FileName).Substring(1)=="txt")
                 MainModel = InputConverter.ConvertToDM(file);
             }
-            return RedirectToAction("PreProcessing");
+            return RedirectToAction("Var");
         }
-
-        public ActionResult PreProcessing()
-        {    
-            return View(MainModel);
-        }
-
+        
         public ActionResult Var()
         {
-             var dm = new VarDataModel(MainModel.Delta1X1.Select(x=>x.Y.Value).ToList(), MainModel.Delta1X2.Select(x => x.Y.Value).ToList());
-             return View(dm);
+             return View(MainModel);
         }
     }
 }

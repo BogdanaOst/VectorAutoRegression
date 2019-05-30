@@ -48,7 +48,7 @@ namespace VectorAutoregression.Services
                 X2Pr.ToList()
             };
         }
-
+        
         private static Func<int, double[]> ones = new Func<int, double[]>(n =>
         {
             var res = new double[n];
