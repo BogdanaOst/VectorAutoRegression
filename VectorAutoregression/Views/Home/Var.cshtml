@@ -1,0 +1,67 @@
+﻿@model VectorAutoregression.Models.VarDataModel
+<!DOCTYPE HTML>
+<html>
+<head>
+    <script>
+    window.onload = function () {
+
+    var chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,
+        theme: "light2",
+        animationEnabled: true,
+        zoomEnabled: true,
+        animationEnabled: true,
+        axisY: {
+            @*minimum: @Model.InputX1.Min(m=>m.Y),*@
+        },
+        title: {
+            text: "First series original and predicted"
+        },
+        data: [{
+            type: "spline",
+            name: "original",
+            dataPoints: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.InputX1))},
+        {
+            type: "spline",
+            name: "predicted",
+            dataPoints: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.OutputX1))}
+        ]
+    });
+        chart.render();
+
+         var chart2 = new CanvasJS.Chart("chartContainer2", {
+        animationEnabled: true,
+        theme: "light2",
+        animationEnabled: true,
+        zoomEnabled: true,
+        animationEnabled: true,
+        axisY: {
+            @*minimum: @Model.InputX2.Min(m=>m.Y),*@
+        },
+        title: {
+            text: "Second series original and predicted"
+        },
+        data: [{
+            type: "spline",
+            name: "original",
+            dataPoints: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.InputX2))},
+        {
+            type: "spline",
+            name: "predicted",
+            dataPoints: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.OutputX2))}
+        ]
+    });
+chart2.render();
+}
+
+    </script>
+</head>
+<body>
+    <h4>Var(1) Model:</h4>
+    <p> $$\begin{pmatrix}X{_t} \\\ Y{_t}\end{pmatrix} = \begin{pmatrix}@Model.CoefMatrix[0, 0] \\\ @Model.CoefMatrix[1, 0]\end{pmatrix} + \begin{pmatrix}@Model.CoefMatrix[0, 1]& @Model.CoefMatrix[0, 2]\\\ @Model.CoefMatrix[1, 1] & @Model.CoefMatrix[1, 2]\end{pmatrix} *\begin{pmatrix}X{_{t-1}} \\\ Y{_{t-1}}\end{pmatrix} + \begin{pmatrix}@Model.Eps[0] \\\ @Model.Eps[1]\end{pmatrix}$$</p>
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <div id="chartContainer2" style="height: 370px; width: 100%;"></div>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+</body>
+</html>      

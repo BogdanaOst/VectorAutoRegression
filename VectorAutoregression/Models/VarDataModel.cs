@@ -6,7 +6,7 @@ using VectorAutoregression.Services;
 
 namespace VectorAutoregression.Models
 {
-    public class DataModel
+    public class VarDataModel
     {
         public List<DataPoint> InputX1 { get; set; }
         public List<DataPoint> InputX2 { get; set; }
@@ -17,9 +17,9 @@ namespace VectorAutoregression.Models
         public double[,] CoefMatrix;
         public double[] Eps;
 
-        public DataModel(List<double> X1, List<double> X2)
+        public VarDataModel(List<double> X1, List<double> X2)
         {
-            var result = ComputeService.Predicted(X1, X2, out CoefMatrix, out Eps);
+            var result = ComputeService.PredictedVar(X1, X2, out CoefMatrix, out Eps);
             InputX1 = X1.ToDataPoint();
             InputX2 = X2.ToDataPoint();
             OutputX1 = result[0].ToDataPoint();

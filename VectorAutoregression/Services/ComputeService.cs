@@ -23,7 +23,6 @@ namespace VectorAutoregression.Services
         #endregion
 
         #region Methods
-        //akf
 
         public static List<double>[] PredictedVar(List<double> X1, List<double> X2, out double[,] B, out double[] eps)
         {
@@ -43,13 +42,13 @@ namespace VectorAutoregression.Services
             var X2Pr = new double[X1.Count];
             X1Pr[0] = X1[0];
             X2Pr[0] = X2[0];
+            B = (B1.Append(B2)).Transpose().ToArray();
+
             for (int i = 1; i < X1.Count; i++)
             {
                 X1Pr[i] = B1[0, 0] + B1[1, 0] * X1Pr[i - 1] + B1[2, 0] * X2Pr[i - 1];
                 X2Pr[i] = B2[0, 0] + B2[1, 0] * X1Pr[i - 1] + B2[2, 0] * X2Pr[i - 1];
             }
-
-            B = (B1.Append(B2)).Transpose().ToArray();
             eps = new double[2] {0,0};
             return new List<double>[2]
             {
