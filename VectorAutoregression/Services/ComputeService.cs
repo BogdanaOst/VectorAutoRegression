@@ -23,26 +23,24 @@ namespace VectorAutoregression.Services
 
         #region Methods
 
-        public static List<double>[] PredictedVar(List<double> X1, List<double> X2, out double[,] B, out double[] eps)
+        public static List<double>[] PredictedVar(List<double> X1, List<double> X2, out double[,] B)
         {
             var M = Matrix<double>.Build;
             var V = Vector<double>.Build;
-            var Y1 = M.DenseOfColumnArrays(X1.ToArray());
-            var Y2 = M.DenseOfColumnArrays(X2.ToArray());
-            var Z = M.DenseOfColumnArrays(ones(X1.Count), X1.ToArray(), X2.ToArray());
-            var B1 = (Z.TransposeThisAndMultiply(Z)).Inverse() * Z.TransposeThisAndMultiply(Y1);
-            var B2 = (Z.TransposeThisAndMultiply(Z)).Inverse() * Z.TransposeThisAndMultiply(Y2);
+            var Y = M.DenseOfColumnArrays(X1.Skip(1).ToArray(), X2.Skip(1).ToArray());
+            var Z = M.DenseOfColumnArrays(ones(X1.Count-1), X1.Take(X1.Count - 1).ToArray(), X2.Take(X1.Count - 1).ToArray());
 
             var X1Pr = new double[X1.Count];
             var X2Pr = new double[X1.Count];
             X1Pr[0] = X1[0];
             X2Pr[0] = X2[0];
-            B = (B1.Append(B2)).Transpose().ToArray();
-            eps = new double[2] { 0, 0 };
+
+            var bM = ((Z.TransposeThisAndMultiply(Z)).Inverse() * Z.TransposeThisAndMultiply(Y));
+            B = bM.Transpose().ToArray();
             for (int i = 1; i < X1.Count; i++)
             {
-                X1Pr[i] = B1[0, 0] + B1[1, 0] * X1Pr[i - 1] + B1[2, 0] * X2Pr[i - 1];
-                X2Pr[i] = B2[0, 0] + B2[1, 0] * X1Pr[i - 1] + B2[2, 0] * X2Pr[i - 1];
+                X1Pr[i] = B[0, 0] + B[0, 1] * X1Pr[i - 1] + B[0, 2] * X2Pr[i - 1];
+                X2Pr[i] = B[1, 0] + B[1, 1] * X1Pr[i - 1] + B[1, 2] * X2Pr[i - 1];
             }
             return new List<double>[2]
             {
@@ -50,7 +48,6 @@ namespace VectorAutoregression.Services
                 X2Pr.ToList()
             };
         }
-
 
         private static Func<int, double[]> ones = new Func<int, double[]>(n =>
         {

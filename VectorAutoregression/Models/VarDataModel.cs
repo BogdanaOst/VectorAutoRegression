@@ -15,11 +15,10 @@ namespace VectorAutoregression.Models
         public List<DataPoint> OutputX2 { get; set; }
 
         public double[,] CoefMatrix;
-        public double[] Eps;
 
         public VarDataModel(List<double> X1, List<double> X2)
         {
-            var result = ComputeService.PredictedVar(X1, X2, out CoefMatrix, out Eps);
+            var result = ComputeService.PredictedVar(X1, X2, out CoefMatrix);
             InputX1 = X1.ToDataPoint();
             InputX2 = X2.ToDataPoint();
             OutputX1 = result[0].ToDataPoint();
