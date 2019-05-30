@@ -11,9 +11,6 @@
         animationEnabled: true,
         zoomEnabled: true,
         animationEnabled: true,
-        axisY: {
-            @*minimum: @Model.InputX1.Min(m=>m.Y),*@
-        },
         title: {
             text: "First series original and predicted"
         },
@@ -35,9 +32,6 @@
         animationEnabled: true,
         zoomEnabled: true,
         animationEnabled: true,
-        axisY: {
-            @*minimum: @Model.InputX2.Min(m=>m.Y),*@
-        },
         title: {
             text: "Second series original and predicted"
         },
@@ -58,7 +52,7 @@ chart2.render();
 </head>
 <body>
     <h4>Var(1) Model:</h4>
-    <p> $$\begin{pmatrix}X{_t} \\\ Y{_t}\end{pmatrix} = \begin{pmatrix}@Model.CoefMatrix[0, 0] \\\ @Model.CoefMatrix[1, 0]\end{pmatrix} + \begin{pmatrix}@Model.CoefMatrix[0, 1]& @Model.CoefMatrix[0, 2]\\\ @Model.CoefMatrix[1, 1] & @Model.CoefMatrix[1, 2]\end{pmatrix} *\begin{pmatrix}X{_{t-1}} \\\ Y{_{t-1}}\end{pmatrix} + \begin{pmatrix}@Model.Eps[0] \\\ @Model.Eps[1]\end{pmatrix}$$</p>
+    <p> $$\begin{pmatrix}X{_t} \\\ Y{_t}\end{pmatrix} = \begin{pmatrix}@Model.CoefMatrix[0, 0] \\\ @Model.CoefMatrix[1, 0]\end{pmatrix} + \begin{pmatrix}@Model.CoefMatrix[0, 1]& @Model.CoefMatrix[0, 2]\\\ @Model.CoefMatrix[1, 1] & @Model.CoefMatrix[1, 2]\end{pmatrix} *\begin{pmatrix}X{_{t-1}} \\\ Y{_{t-1}}\end{pmatrix} @*+ \begin{pmatrix}@Model.Eps[0] \\\ @Model.Eps[1]\end{pmatrix}*@$$</p>
     <div id="chartContainer" style="height: 370px; width: 100%;"></div>
     <div id="chartContainer2" style="height: 370px; width: 100%;"></div>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
