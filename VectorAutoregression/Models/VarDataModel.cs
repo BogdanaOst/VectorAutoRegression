@@ -29,14 +29,13 @@ namespace VectorAutoregression.Models
             {
                 this.FinInp1 = Delta(InputX1);
                 this.FinInp2 = Delta(InputX2);
-                result = ComputeService.PredictedVar(FinInp1.Select(d=>d.Y.Value).ToList(), FinInp2.Select(d => d.Y.Value).ToList(), out CoefMatrix);
             }
             else
             {
                 this.FinInp1 = InputX1;
                 this.FinInp2 = InputX2;
-                result = ComputeService.PredictedVar(X1, X2, out CoefMatrix);
             }
+            result = ComputeService.PredictedVar(FinInp1.Select(d => d.Y.Value).ToList(), FinInp2.Select(d => d.Y.Value).ToList(), out CoefMatrix);
             OutputX1 = result[0].ToDataPoint();
             OutputX2 = result[1].ToDataPoint();
         }
@@ -53,7 +52,6 @@ namespace VectorAutoregression.Models
 
         private bool NeedDiffs()
         {
-            
             needToUseDeltas = "Series are stationar or non-cointegrative. Will build model with original data";
             return false;
         }
