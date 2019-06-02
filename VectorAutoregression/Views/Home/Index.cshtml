@@ -5,18 +5,28 @@
     <meta name="viewport" content="width=device-width" />
 </head>
 <body>
-    <h2>Wellcome to Vector AutoRegression Builder!</h2>
-    <h3>Please, upload your input series (2 columns space or tab separated) or leave empty and we'll show you our example result</h3>
-    <div>
-        @using (Html.BeginForm("Index",
-                        "Home",
-                        FormMethod.Post,
-                        new { enctype = "multipart/form-data" }))
-        {
-            <label for="file">Upload file:</label>
-            <input type="file" name="file" id="file" /><br><br>
-            <input type="submit" value="Upload" />
-        }
+    <h3>Wellcome to Vector AutoRegression Builder!</h3>
+    <h4>Please, upload your input series (2 columns space or tab separated) or leave empty and we'll show you our example result</h4>
+    <br />
+    <div class="container">
+        <div class="col-md-8 col-md-offset-2">
+            <!-- COMPONENT START -->
+            <div class="form-group">
+                @using (Html.BeginForm("Index",
+"Home",
+FormMethod.Post,
+new { enctype = "multipart/form-data" }))
+                {
+                    <div class="input-group input-file">
+                        <span class="input-group-btn">
+                            <input class="btn btn-default btn-choose" type="file" name="file" />
+                        </span>
+                    </div>
+                    <br />
+                    <input class="btn" type="submit" value="Upload" />
+                }
+            </div>
+        </div>
     </div>
 </body>
 </html>
