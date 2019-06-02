@@ -1,8 +1,10 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using VectorAutoregression.Models;
+using Extreme.Statistics;
 
 namespace VectorAutoregression.Services
 {
@@ -23,7 +25,7 @@ namespace VectorAutoregression.Services
 
         #region Methods
 
-        public static List<double>[] PredictedVar(List<double> X1, List<double> X2, out double[,] B)
+        public static List<double>[] PredictedVar(List<double> X1, List<double> X2, out double[,] B, out double[,] Q)
         {
             var M = Matrix<double>.Build;
             var V = Vector<double>.Build;
@@ -42,6 +44,10 @@ namespace VectorAutoregression.Services
                 X1Pr[i] = B[0, 0] + B[0, 1] * X1Pr[i - 1] + B[0, 2] * X2Pr[i - 1];
                 X2Pr[i] = B[1, 0] + B[1, 1] * X1Pr[i - 1] + B[1, 2] * X2Pr[i - 1];
             }
+            double Fk1, Fn1, Fk2, Fn2;
+            var o1 = IsModelOk(X1, X1Pr.ToList(), out Fk1, out Fn1);
+            var o2 = IsModelOk(X2, X2Pr.ToList(), out Fk2, out Fn2);
+            Q = new double[2, 3] { { Convert.ToInt32(o1), Fk1, Fn1 },{Convert.ToInt32(o2), Fk2, Fn2 } };
             return new List<double>[2]
             {
                 X1Pr.ToList(),
@@ -57,6 +63,22 @@ namespace VectorAutoregression.Services
             return res;
         });
 
+        public static bool IsModelOk(List<double> Orig, List<double> Pred, out double Fk, out double Fn)
+        {
+            var eps = new double[Orig.Count];
+            double n = Orig.Count - 2.0;
+            for (int i=0;i<Orig.Count;i++)
+            {
+                eps[i] = Orig[i] - Pred[i];
+            }
+            var M = Matrix<double>.Build;
+            var epsM = M.DenseOfColumnArrays(eps);
+            var Sa = (epsM.TransposeThisAndMultiply(epsM) / (n))[0,0];
+            var Sy = Statistics.Variance(Orig);
+            Fn = Sa / Sy;
+            Fk = MathNet.Numerics.Distributions.FisherSnedecor.InvCDF(n - 2, n - 1, 0.05);
+            return Fk > Fn;
+        }
         #endregion
     }
 }
